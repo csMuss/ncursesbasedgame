@@ -1,8 +1,13 @@
 #include <ncurses.h> /* ncurses.h includes stdio.h */
 #include <string.h>
 
+#define WIDTH 40
+#define HEIGHT 38
+
 WINDOW* createNewWin(int height, int width, int starty, int startx);
-void destroyWin(WINDOW *local_win);
+void destroyWin(WINDOW* localWin);
+float getStartY(int rows, float position);
+float getStartX(int cols, float position);
 
 int main(void){
 
@@ -11,11 +16,16 @@ int main(void){
 	int rows, cols;
 	
     // Make a smaller window
-    WINDOW* smallWin;
-    int startx, starty, width, height;
+    WINDOW* smallWin1;
+	WINDOW* smallWin2;
+	WINDOW* smallWin3;
+    WINDOW* smallWin4;
+
     // Character input for the user to interact with the program
     int ch;
-	
+	// x / y pos for windows
+	int starty1, startx1, starty2, startx2, 
+		starty3, startx3, starty4, startx4;
 	// Initalize screen
 	initscr();
 	// Disable echoing of input
@@ -26,55 +36,43 @@ int main(void){
 	init_pair(1, COLOR_WHITE, COLOR_BLUE);
 	// Get terminal variables
 	getmaxyx(stdscr, rows, cols);
-	// Variables for smaller window
-	height = 30;
-	width = 30;
 
 	// Setting color of main window
 	wbkgd(stdscr, COLOR_PAIR(1));
 	// Centeral placement of window
-	starty = (rows - height) / 2;
-	startx = (cols - width) / 2;
+	starty1 = starty2 = starty3 = starty4 = getStartY(rows, 8);
 	
+	startx1 = getStartX(cols, 48);
+	startx2 = getStartX(cols, 3.1);
+	startx3 = getStartX(cols, 1.6);
+	startx4 = getStartX(cols, 1.1);	
+
 	// Pair one with foreground and background
 	init_pair(1, COLOR_WHITE, COLOR_BLUE);
 	attron(COLOR_PAIR(1));
 
 	//Putting in the new window
 	refresh();
-	smallWin = createNewWin(height, width, starty, startx);
+	smallWin1 = createNewWin(HEIGHT, WIDTH, starty1, startx1);
+	smallWin2 = createNewWin(HEIGHT, WIDTH, starty2, startx2);
+	smallWin3 = createNewWin(HEIGHT, WIDTH, starty3, startx3);
+    smallWin4 = createNewWin(HEIGHT, WIDTH, starty4, startx4);
+
 	attron(COLOR_PAIR(1));
     // Print text to screen
     // Top of screen and middle of screen
-    mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg);
+    mvprintw(0, (cols - strlen(msg)) / 2.1, "%s", msg);
 	
 	// User input
-	while((ch = getch()) != 'q')
-	{	switch(ch)
-		{	
-			case 'a':
-				if(startx > 0){
-					destroyWin(smallWin);
-					smallWin = createNewWin(height, width, starty, --startx);
-				}
+	while((ch = getch()) != 'q') {	
+		switch(ch) {	
+			case 'w': // up
 				break;
-			case 'd':
-				if(startx < cols - 1){
-					destroyWin(smallWin);
-					smallWin = createNewWin(height, width, starty, ++startx);
-				}
+			case 's': // down
 				break;
-			case 'w':
-				if(starty > 0){
-					destroyWin(smallWin);
-					smallWin = createNewWin(height, width, --starty, startx);
-				}
+			case 'a': // left
 				break;
-			case 's':
-				if(starty < rows - 1){
-					destroyWin(smallWin);
-					smallWin = createNewWin(height, width, ++starty, startx);
-				}
+			case 'd': // right
 				break;	
 		}
 	}
@@ -88,8 +86,8 @@ int main(void){
 }
 
 // Helper function
-WINDOW* createNewWin(int height, int width, int starty, int startx)
-{	WINDOW* localWin;
+WINDOW* createNewWin(int height, int width, int starty, int startx){	
+	WINDOW* localWin;
 
 	localWin = newwin(height, width, starty, startx);
 	box(localWin, 0 , 0);
@@ -100,8 +98,7 @@ WINDOW* createNewWin(int height, int width, int starty, int startx)
 
 
 
-void destroyWin(WINDOW* localWin)
-{	
+void destroyWin(WINDOW* localWin){	
 	wborder(localWin, ' ', ' ', ' ',' ',' ',' ',' ',' ');
 	/* The parameters taken are 
 	 * 1. win: the window on which to operate
@@ -117,3 +114,12 @@ void destroyWin(WINDOW* localWin)
 	wrefresh(localWin);
 	delwin(localWin);
 }
+
+float getStartY(int rows, float position){
+	return (rows - HEIGHT) / position;
+}
+
+float getStartX(int cols, float position){
+	return (cols - WIDTH) / position;
+}
+
