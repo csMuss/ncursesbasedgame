@@ -15,21 +15,27 @@ int main(void){
     int startx, starty, width, height;
     // Character input for the user to interact with the program
     int ch;
-
-	// Initialize the screen
+	
+	// Initalize screen
 	initscr();
+	// Disable echoing of input
+    noecho();
+	// Making colorpares
+	// Pair one with foreground and background
+    start_color();
+	init_pair(1, COLOR_WHITE, COLOR_BLUE);
+	// Get terminal variables
 	getmaxyx(stdscr, rows, cols);
 	// Variables for smaller window
 	height = 30;
 	width = 30;
+
+	// Setting color of main window
+	wbkgd(stdscr, COLOR_PAIR(1));
 	// Centeral placement of window
 	starty = (rows - height) / 2;
 	startx = (cols - width) / 2;
 	
-	// Disable echoing of input
-	noecho();
-	// Setting color on
-	start_color();
 	// Pair one with foreground and background
 	init_pair(1, COLOR_WHITE, COLOR_BLUE);
 	attron(COLOR_PAIR(1));
