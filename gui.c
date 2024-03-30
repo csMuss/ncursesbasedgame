@@ -11,28 +11,28 @@ float getStartX(int cols, int width, float position);
 
 int main(void){
 
-	char msg[] = "SAMPLE TEXT";
+	char msg[] = "BATTLE OF BOMROCK";
 	// Variables for getmaxyx
 	int rows, cols;
 
-    // Make a smaller window
-    WINDOW* smallWin1;
+	// Make a smaller window
+	WINDOW* smallWin1;
 	WINDOW* smallWin2;
 	WINDOW* smallWin3;
     WINDOW* smallWin4;
 
-    // Character input for the user to interact with the program
-    int ch;
+	// Character input for the user to interact with the program
+	int ch;
 	// x / y pos for windows
 	int starty1, startx1, starty2, startx2, 
 		starty3, startx3, starty4, startx4;
 	// Initalize screen
 	initscr();
 	// Disable echoing of input
-    noecho();
+	noecho();
 	// Making colorpairs
 	// Pair one with foreground and background
-    start_color();
+	start_color();
 	// Get terminal variables
 	getmaxyx(stdscr, rows, cols);
 	
@@ -84,7 +84,7 @@ int main(void){
 	attron(COLOR_PAIR(1));
     // Print text to screen
     // Top of screen and middle of screen
-    mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg);
+	mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg);
 	
 	// User input
 	while((ch = getch()) != 'q') {	
@@ -99,7 +99,7 @@ int main(void){
 				break;	
 			case 't': // change string
 				char msg1[] = "CHANGED TEXT!!!!";
-				mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg1);
+				mvprintw(0, (cols - strlen(msg1)) / 2, "%s", msg1);
 				break;
 			case 'r': // refresh
 				break;
