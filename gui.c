@@ -1,4 +1,5 @@
-#include <ncurses.h> /* ncurses.h includes stdio.h */
+// ncurses.h includes stdio.h
+#include <ncurses.h> 
 #include <string.h>
 
 #define WIDTH 40
@@ -34,16 +35,16 @@ int main(void){
 	// Making colorpares
 	// Pair one with foreground and background
     start_color();
-	init_pair(1, COLOR_WHITE, COLOR_BLUE);
 	// Get terminal variables
 	getmaxyx(stdscr, rows, cols);
 
 	// Setting color of main window
-	wbkgd(stdscr, COLOR_PAIR(1));
+	// wbkgd(stdscr, COLOR_PAIR(1));
 	// Setting colors of smaller windows
+	init_pair(1, COLOR_WHITE, COLOR_BLACK);
 	init_pair(2, COLOR_WHITE, COLOR_RED);
 	init_pair(3, COLOR_WHITE, COLOR_GREEN);
-	init_pair(4, COLOR_WHITE, COLOR_YELLOW);
+	init_pair(4, COLOR_WHITE, COLOR_MAGENTA);
 	init_pair(5, COLOR_WHITE, COLOR_CYAN);
 
 	// Centeral placement of window
