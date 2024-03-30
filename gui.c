@@ -2,14 +2,12 @@
 #include <ncurses.h> 
 #include <string.h>
 
-#define WIDTH 40
-#define HEIGHT 38
 #define NUMWINDOWS 4
 
 WINDOW* createNewWin(int height, int width, int starty, int startx);
 void destroyWin(WINDOW* localWin);
-float getStartY(int rows, float position);
-float getStartX(int cols, float position);
+float getStartY(int rows, int height, float position);
+float getStartX(int cols, int width, float position);
 
 int main(void){
 
@@ -32,31 +30,36 @@ int main(void){
 	initscr();
 	// Disable echoing of input
     noecho();
-	// Making colorpares
+	// Making colorpairs
 	// Pair one with foreground and background
     start_color();
 	// Get terminal variables
 	getmaxyx(stdscr, rows, cols);
+	
+	int HEIGHT, WIDTH;
 
+	HEIGHT = rows / 1.4;
+	WIDTH  = cols / 5;
 	// Setting color of main window
 	// wbkgd(stdscr, COLOR_PAIR(1));
 	// Setting colors of smaller windows
-	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	init_pair(2, COLOR_WHITE, COLOR_RED);
-	init_pair(3, COLOR_WHITE, COLOR_GREEN);
-	init_pair(4, COLOR_WHITE, COLOR_MAGENTA);
-	init_pair(5, COLOR_WHITE, COLOR_CYAN);
+	init_pair(1, COLOR_WHITE,   COLOR_BLACK);
+	init_pair(2, COLOR_WHITE,    COLOR_CYAN);
+	init_pair(3, COLOR_WHITE,   COLOR_GREEN);
+	init_pair(4, COLOR_WHITE,     COLOR_RED);
+	init_pair(5, COLOR_WHITE,    COLOR_BLUE);
 
 	// Centeral placement of window
-	starty1 = starty2 = starty3 = starty4 = getStartY(rows, 8);
-	
-	startx1 = getStartX(cols, 48);
-	startx2 = getStartX(cols, 3.1);
-	startx3 = getStartX(cols, 1.6);
-	startx4 = getStartX(cols, 1.1);	
+	starty1 = starty2 = starty3 = starty4 = getStartY(rows, HEIGHT, 8);
+	// Offset by 45 for optimal
+	// Lowest you can do is 45
+	// Highest you can do is 250
+	startx1 = getStartX(cols, WIDTH, 55); 
+	startx2 = getStartX(cols, WIDTH, 100);
+	startx3 = getStartX(cols, WIDTH, 145);
+	startx4 = getStartX(cols, WIDTH, 190);	
 
 	// Pair one with foreground and background
-	init_pair(1, COLOR_WHITE, COLOR_BLUE);
 	attron(COLOR_PAIR(1));
 
 	//Putting in the new window
@@ -81,7 +84,7 @@ int main(void){
 	attron(COLOR_PAIR(1));
     // Print text to screen
     // Top of screen and middle of screen
-    mvprintw(0, (cols - strlen(msg)) / 2.1, "%s", msg);
+    mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg);
 	
 	// User input
 	while((ch = getch()) != 'q') {	
@@ -96,14 +99,9 @@ int main(void){
 				break;	
 			case 't': // change string
 				char msg1[] = "CHANGED TEXT!!!!";
-				mvprintw(0, (cols - strlen(msg)) / 2.1, "%s", msg1);
+				mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg1);
 				break;
 			case 'r': // refresh
-				refresh();
-				wbkgd(smallWin1, COLOR_PAIR(5));
-    			wbkgd(smallWin2, COLOR_PAIR(2));
-    			wbkgd(smallWin3, COLOR_PAIR(3));
-			    wbkgd(smallWin4, COLOR_PAIR(4));
 				break;
 		}
 	}
@@ -146,11 +144,10 @@ void destroyWin(WINDOW* localWin){
 	delwin(localWin);
 }
 
-float getStartY(int rows, float position){
-	return (rows - HEIGHT) / position;
+float getStartY(int rows, int height, float position){
+	return (rows - height) - position;
 }
 
-float getStartX(int cols, float position){
-	return (cols - WIDTH) / position;
+float getStartX(int cols, int width, float position){
+	return (cols - width) - (cols - position);
 }
-
