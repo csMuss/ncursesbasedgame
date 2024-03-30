@@ -86,6 +86,16 @@ int main(void){
     // Top of screen and middle of screen
 	mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg);
 	
+	// Messages above windows
+	char dmsg[] = "DIALOG";
+	char amsg[] = "AREA";
+	char mmsg[] = "MOVEMENT";
+	char imsg[] = "INVENTORY";
+
+	mvprintw(5, ((cols - strlen(dmsg)) / 2) - 70, "%s", dmsg);
+	mvprintw(5, ((cols - strlen(amsg)) / 2) - 25, "%s", amsg);
+	mvprintw(5, ((cols - strlen(mmsg)) / 2) + 20, "%s", mmsg);
+	mvprintw(5, ((cols - strlen(imsg)) / 2) + 68, "%s", imsg);
 	// User input
 	while((ch = getch()) != 'q') {	
 		switch(ch) {	
