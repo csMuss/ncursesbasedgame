@@ -3,6 +3,7 @@
 
 #define WIDTH 40
 #define HEIGHT 38
+#define NUMWINDOWS 4
 
 WINDOW* createNewWin(int height, int width, int starty, int startx);
 void destroyWin(WINDOW* localWin);
@@ -14,7 +15,7 @@ int main(void){
 	char msg[] = "SAMPLE TEXT";
 	// Variables for getmaxyx
 	int rows, cols;
-	
+
     // Make a smaller window
     WINDOW* smallWin1;
 	WINDOW* smallWin2;
@@ -39,6 +40,12 @@ int main(void){
 
 	// Setting color of main window
 	wbkgd(stdscr, COLOR_PAIR(1));
+	// Setting colors of smaller windows
+	init_pair(2, COLOR_WHITE, COLOR_RED);
+	init_pair(3, COLOR_WHITE, COLOR_GREEN);
+	init_pair(4, COLOR_WHITE, COLOR_YELLOW);
+	init_pair(5, COLOR_WHITE, COLOR_CYAN);
+
 	// Centeral placement of window
 	starty1 = starty2 = starty3 = starty4 = getStartY(rows, 8);
 	
@@ -58,6 +65,18 @@ int main(void){
 	smallWin3 = createNewWin(HEIGHT, WIDTH, starty3, startx3);
     smallWin4 = createNewWin(HEIGHT, WIDTH, starty4, startx4);
 
+	// Apply color pairs to each window
+    wbkgd(smallWin1, COLOR_PAIR(5));
+    wbkgd(smallWin2, COLOR_PAIR(2));
+    wbkgd(smallWin3, COLOR_PAIR(3));
+    wbkgd(smallWin4, COLOR_PAIR(4));
+
+    // Refresh each window to apply the color
+    wrefresh(smallWin1);
+    wrefresh(smallWin2);
+    wrefresh(smallWin3);
+    wrefresh(smallWin4);
+
 	attron(COLOR_PAIR(1));
     // Print text to screen
     // Top of screen and middle of screen
@@ -74,6 +93,17 @@ int main(void){
 				break;
 			case 'd': // right
 				break;	
+			case 't': // change string
+				char msg1[] = "CHANGED TEXT!!!!";
+				mvprintw(0, (cols - strlen(msg)) / 2.1, "%s", msg1);
+				break;
+			case 'r': // refresh
+				refresh();
+				wbkgd(smallWin1, COLOR_PAIR(5));
+    			wbkgd(smallWin2, COLOR_PAIR(2));
+    			wbkgd(smallWin3, COLOR_PAIR(3));
+			    wbkgd(smallWin4, COLOR_PAIR(4));
+				break;
 		}
 	}
 	// Wait for user input and endwin
