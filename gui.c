@@ -16,10 +16,10 @@ int main(void){
 	int rows, cols;
 
 	// Make a smaller window
-	WINDOW* smallWin1;
-	WINDOW* smallWin2;
-	WINDOW* smallWin3;
-    WINDOW* smallWin4;
+	WINDOW* dWin;
+	WINDOW* aWin;
+	WINDOW* mWin;
+    WINDOW* iWin;
 
 	// Character input for the user to interact with the program
 	int ch;
@@ -45,6 +45,8 @@ int main(void){
 	init_color(COLOR_CYAN, 0, 700, 700);
 	init_color(COLOR_GREEN, 0, 700, 0);
 	init_color(COLOR_BLUE, 0, 0, 700);
+	init_color(COLOR_BLACK, 0, 0, 0);
+
 	// Setting color of main window
 	// wbkgd(stdscr, COLOR_PAIR(1));
 	// Setting colors of smaller windows
@@ -69,39 +71,47 @@ int main(void){
 
 	//Putting in the new window
 	refresh();
-	smallWin1 = createNewWin(HEIGHT, WIDTH, starty1, startx1);
-	smallWin2 = createNewWin(HEIGHT, WIDTH, starty2, startx2);
-	smallWin3 = createNewWin(HEIGHT, WIDTH, starty3, startx3);
-    smallWin4 = createNewWin(HEIGHT, WIDTH, starty4, startx4);
+	dWin = createNewWin(HEIGHT, WIDTH, starty1, startx1);
+	aWin = createNewWin(HEIGHT, WIDTH, starty2, startx2);
+	mWin = createNewWin(HEIGHT, WIDTH, starty3, startx3);
+    iWin = createNewWin(HEIGHT, WIDTH, starty4, startx4);
 
 	// Apply color pairs to each window
-    wbkgd(smallWin1, COLOR_PAIR(5));
-    wbkgd(smallWin2, COLOR_PAIR(2));
-    wbkgd(smallWin3, COLOR_PAIR(3));
-    wbkgd(smallWin4, COLOR_PAIR(4));
+    wbkgd(dWin, COLOR_PAIR(5));
+    wbkgd(aWin, COLOR_PAIR(2));
+    wbkgd(mWin, COLOR_PAIR(3));
+    wbkgd(iWin, COLOR_PAIR(4));
 	attron(COLOR_PAIR(1));
     // Print text to screen
     // Top of screen and middle of screen
 	mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg);
 	
 	// Messages above windows, mvw print
-	mvwprintw(smallWin1, 0, 2, "DIALOG");
-	mvwprintw(smallWin2, 0, 2, "AREA");
-	mvwprintw(smallWin3, 0, 2, "MOVEMENT");
-	mvwprintw(smallWin4, 0, 2, "INVENTORY");
+	mvwprintw(dWin, 0, 2, "DIALOG");
+	mvwprintw(aWin, 0, 2, "AREA");
+	mvwprintw(mWin, 0, 2, "MOVEMENT");
+	mvwprintw(iWin, 0, 2, "INVENTORY");
 	// Refresh after apply color and text
- 	wrefresh(smallWin1);
-    wrefresh(smallWin2);
-    wrefresh(smallWin3);
-    wrefresh(smallWin4);
+ 	wrefresh(dWin);
+    wrefresh(aWin);
+    wrefresh(mWin);
+    wrefresh(iWin);
+
 	// User input
 	while((ch = getch()) != 'q') {	
 		switch(ch) {	
 			case 'd': // dialog
+				mvwprintw(dWin, 1, 1, "YOU WAKE UP IN A GOLDEN FIELD, ON TOP OF "
+				"A SMALL HILL WITH AN OAK TREE AND THREE PATHS EACH GOING NORTH, SOUTH "
+				"AND WEST...");
+				wrefresh(dWin);
 				break;
 			case 'a': // area
+				mvwprintw(aWin, 1, 1, "YOU MAY GO, NORTH, SOUTH, OR WEST...");
+				wrefresh(aWin);
 				break;
 			case 'm': // movement
+				// Read in iput
 				break;
 			case 'i': // inventory
 				break;	
