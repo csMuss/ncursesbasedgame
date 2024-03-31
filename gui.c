@@ -97,13 +97,13 @@ int main(void){
 	// User input
 	while((ch = getch()) != 'q') {	
 		switch(ch) {	
-			case 'w': // up
+			case 'd': // dialog
 				break;
-			case 's': // down
+			case 'a': // area
 				break;
-			case 'a': // left
+			case 'm': // movement
 				break;
-			case 'd': // right
+			case 'i': // inventory
 				break;	
 			case 't': // change string
 				char msg1[] = "CHANGED TEXT!!!!";
@@ -115,8 +115,6 @@ int main(void){
 	}
 	// Wait for user input and endwin
 	refresh();
-	attroff(COLOR_PAIR(1));
-	getch();
 	endwin();
 	
 	return 0;
