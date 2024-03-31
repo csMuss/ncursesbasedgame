@@ -11,7 +11,7 @@ float getStartX(int cols, int width, float position);
 
 int main(void){
 
-	char msg[] = "BATTLE OF BOMROCK";
+	char msg[] = "REALM OF BOMROCK";
 	// Variables for getmaxyx
 	int rows, cols;
 
@@ -40,6 +40,11 @@ int main(void){
 
 	HEIGHT = rows / 1.4;
 	WIDTH  = cols / 5;
+	// Special colors r,g,b
+	init_color(COLOR_RED, 700, 0, 0);
+	init_color(COLOR_CYAN, 0, 700, 700);
+	init_color(COLOR_GREEN, 0, 700, 0);
+	init_color(COLOR_BLUE, 0, 0, 700);
 	// Setting color of main window
 	// wbkgd(stdscr, COLOR_PAIR(1));
 	// Setting colors of smaller windows
@@ -74,28 +79,21 @@ int main(void){
     wbkgd(smallWin2, COLOR_PAIR(2));
     wbkgd(smallWin3, COLOR_PAIR(3));
     wbkgd(smallWin4, COLOR_PAIR(4));
-
-    // Refresh each window to apply the color
-    wrefresh(smallWin1);
-    wrefresh(smallWin2);
-    wrefresh(smallWin3);
-    wrefresh(smallWin4);
-
 	attron(COLOR_PAIR(1));
     // Print text to screen
     // Top of screen and middle of screen
 	mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg);
 	
-	// Messages above windows
-	char dmsg[] = "DIALOG";
-	char amsg[] = "AREA";
-	char mmsg[] = "MOVEMENT";
-	char imsg[] = "INVENTORY";
-
-	mvprintw(5, ((cols - strlen(dmsg)) / 2) - 70, "%s", dmsg);
-	mvprintw(5, ((cols - strlen(amsg)) / 2) - 25, "%s", amsg);
-	mvprintw(5, ((cols - strlen(mmsg)) / 2) + 20, "%s", mmsg);
-	mvprintw(5, ((cols - strlen(imsg)) / 2) + 68, "%s", imsg);
+	// Messages above windows, mvw print
+	mvwprintw(smallWin1, 0, 2, "DIALOG");
+	mvwprintw(smallWin2, 0, 2, "AREA");
+	mvwprintw(smallWin3, 0, 2, "MOVEMENT");
+	mvwprintw(smallWin4, 0, 2, "INVENTORY");
+	// Refresh after apply color and text
+ 	wrefresh(smallWin1);
+    wrefresh(smallWin2);
+    wrefresh(smallWin3);
+    wrefresh(smallWin4);
 	// User input
 	while((ch = getch()) != 'q') {	
 		switch(ch) {	
