@@ -12,7 +12,8 @@ void getCommand(char* userIn, WINDOW* smallWin);
 
 int main(void){
 
-	char msg[] = "REALM OF BOMROCK";
+	char msg[] = "KRONK!";
+	char exitHint[] = "PRESS q TO EXIT!";
 	// Variables for getmaxyx
 	int rows, cols;
 
@@ -86,7 +87,8 @@ int main(void){
     // Print text to screen
     // Top of screen and middle of screen
 	mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg);
-	
+	// Print exit hint at bottom
+	mvprintw(rows - 2, (cols - strlen(exitHint)) / 2, "%s", exitHint);
 	// Messages above windows, mvw print
 	mvwprintw(dWin, 0, 2, "DIALOG");
 	mvwprintw(aWin, 0, 2, "AREA");
@@ -141,11 +143,18 @@ int main(void){
 // Get command function for 
 void getCommand(char* userIn, WINDOW* smallWin){
 	// Return an int based on string input
-	if(*userIn == "forward"){ // Forward
+	echo();
+	wgetstr(smallWin, userIn);
+	if(strcmp(userIn, "forward") == 0){ // Forward
+		wrefresh(smallWin);
 		mvwprintw(smallWin, 1, 1, "You Moved!");
 		wrefresh(smallWin);
 	} else { // Command Not found
+		wrefresh(smallWin);
+		mvwprintw(smallWin, 1, 1, "COMMAND NOT FOUND!");
+		wrefresh(smallWin);
 	}
+	noecho();
 }
 
 // Helper functions
