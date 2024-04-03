@@ -88,7 +88,7 @@ int main(void){
     // Top of screen and middle of screen
 	mvprintw(0, (cols - strlen(msg)) / 2, "%s", msg);
 	// Print exit hint at bottom
-	mvprintw(rows - 2, (cols - strlen(exitHint)) / 2, "%s", exitHint);
+	mvprintw(rows - 1, (cols - strlen(exitHint)) / 2, "%s", exitHint);
 	// Messages above windows, mvw print
 	mvwprintw(dWin, 0, 2, "DIALOG");
 	mvwprintw(aWin, 0, 2, "AREA");
@@ -112,18 +112,19 @@ int main(void){
 			case 'd': // dialog
 				mvwprintw(dWin, 1, 1, "YOU WAKE UP IN A GOLDEN FIELD, ON TOP OF "
 				"A SMALL HILL, WITH AN OAK TREE AND THREE PATHS. EACH GOING NORTH, SOUTH "
-				"AND WEST...");
+				"AND WEST...\n");
 				wrefresh(dWin);
 				break;
 			case 'a': // area
-				mvwprintw(aWin, 1, 1, "YOU MAY GO, NORTH, SOUTH, OR WEST...");
+				mvwprintw(aWin, 1, 1, "YOU MAY GO, NORTH, SOUTH, OR WEST...\n");
+				mvwprintw(aWin, 2, 1, "YOU ARE CURRENTLY FACING NORTH...\n");
 				wrefresh(aWin);
 				break;
 			case 'm': // movement
 				// Will list the moves you have made until the window is full,
 				// Once it is, it will then respawn the window blank and ready
 				// To display new commands
-				mvwprintw(mWin, 1, 1, "AWAITING COMMAND...");
+				mvwprintw(mWin, 1, 1, "AWAITING COMMAND...\n");
 				wrefresh(mWin);
 				getCommand(userIn, mWin);
 				break;
@@ -152,11 +153,11 @@ void getCommand(char* userIn, WINDOW* smallWin){
 	wgetstr(smallWin, userIn);
 	if(strcmp(userIn, "forward") == 0){ // Forward
 		wrefresh(smallWin);
-		mvwprintw(smallWin, 1, 1, "YOU MOVED FORWARD");
+		mvwprintw(smallWin, 1, 1, "YOU MOVED FORWARD\n");
 		wrefresh(smallWin);
 	} else { // Command Not found
 		wrefresh(smallWin);
-		mvwprintw(smallWin, 1, 1, "COMMAND NOT FOUND!");
+		mvwprintw(smallWin, 1, 1, "COMMAND NOT FOUND!\n");
 		wrefresh(smallWin);
 	}
 	noecho();
