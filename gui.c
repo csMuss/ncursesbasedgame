@@ -8,6 +8,7 @@ WINDOW* createNewWin(int height, int width, int starty, int startx);
 void destroyWin(WINDOW* localWin);
 float getStartY(int rows, int height, float position);
 float getStartX(int cols, int width, float position);
+void getCommand(char* userIn, WINDOW* smallWin);
 
 int main(void){
 
@@ -99,10 +100,12 @@ int main(void){
 
 	// User input
 	while((ch = getch()) != 'q') {	
+		char userIn[100];
+
 		switch(ch) {	
 			case 'd': // dialog
 				mvwprintw(dWin, 1, 1, "YOU WAKE UP IN A GOLDEN FIELD, ON TOP OF "
-				"A SMALL HILL WITH AN OAK TREE AND THREE PATHS EACH GOING NORTH, SOUTH "
+				"A SMALL HILL, WITH AN OAK TREE AND THREE PATHS. EACH GOING NORTH, SOUTH "
 				"AND WEST...");
 				wrefresh(dWin);
 				break;
@@ -111,7 +114,12 @@ int main(void){
 				wrefresh(aWin);
 				break;
 			case 'm': // movement
-				// Read in iput
+				// Will list the moves you have made until the window is full,
+				// Once it is, it will then respawn the window blank and ready
+				// To display new commands
+				mvwprintw(mWin, 1, 1, "AWAITING COMMAND...");
+				wrefresh(mWin);
+				getCommand(userIn, mWin);
 				break;
 			case 'i': // inventory
 				break;	
@@ -130,7 +138,17 @@ int main(void){
 	return 0;
 }
 
-// Helper function
+// Get command function for 
+void getCommand(char* userIn, WINDOW* smallWin){
+	// Return an int based on string input
+	if(*userIn == "forward"){ // Forward
+		mvwprintw(smallWin, 1, 1, "You Moved!");
+		wrefresh(smallWin);
+	} else { // Command Not found
+	}
+}
+
+// Helper functions
 WINDOW* createNewWin(int height, int width, int starty, int startx){	
 	WINDOW* localWin;
 
