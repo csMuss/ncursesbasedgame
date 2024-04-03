@@ -103,7 +103,11 @@ int main(void){
 	// User input
 	while((ch = getch()) != 'q') {	
 		char userIn[100];
-
+		/**
+		 * Loop through until q, store outputs of getCommand in an array
+		 * Once we will increment the array if the command is successful
+		 * To save the game we will output the array to a file
+		*/
 		switch(ch) {	
 			case 'd': // dialog
 				mvwprintw(dWin, 1, 1, "YOU WAKE UP IN A GOLDEN FIELD, ON TOP OF "
@@ -125,11 +129,12 @@ int main(void){
 				break;
 			case 'i': // inventory
 				break;	
-			case 't': // change string
-				char msg1[] = "CHANGED TEXT!!!!";
-				mvprintw(0, (cols - strlen(msg1)) / 2, "%s", msg1);
-				break;
 			case 'r': // refresh
+			 	wrefresh(dWin);
+   				wrefresh(aWin);
+    			wrefresh(mWin);
+    			wrefresh(iWin);
+				refresh();
 				break;
 		}
 	}
@@ -147,7 +152,7 @@ void getCommand(char* userIn, WINDOW* smallWin){
 	wgetstr(smallWin, userIn);
 	if(strcmp(userIn, "forward") == 0){ // Forward
 		wrefresh(smallWin);
-		mvwprintw(smallWin, 1, 1, "You Moved!");
+		mvwprintw(smallWin, 1, 1, "YOU MOVED FORWARD");
 		wrefresh(smallWin);
 	} else { // Command Not found
 		wrefresh(smallWin);
