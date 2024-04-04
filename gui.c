@@ -9,11 +9,19 @@ void destroyWin(WINDOW* localWin);
 float getStartY(int rows, int height, float position);
 float getStartX(int cols, int width, float position);
 void getCommand(char* userIn, WINDOW* smallWin);
+void printInventory(WINDOW* smallWin, int inventory[], int numOfItems);
 
 int main(void){
 
 	char msg[] = "KRONK!";
 	char exitHint[] = "PRESS q TO EXIT!";
+	// Inventory, we will start with 20 possible items
+	int inventory[20];
+	inventory[0] = 1;
+	inventory[1] = 2;
+	// Number of items we have in our inventory currently
+	int inventoryNumCounter = 2;
+	
 	// Variables for getmaxyx
 	int rows, cols;
 
@@ -129,6 +137,8 @@ int main(void){
 				getCommand(userIn, mWin);
 				break;
 			case 'i': // inventory
+				printInventory(iWin, inventory, inventoryNumCounter);
+				wrefresh(iWin);
 				break;	
 			case 'r': // refresh
 			 	wrefresh(dWin);
@@ -144,6 +154,34 @@ int main(void){
 	endwin();
 	
 	return 0;
+}
+
+// Print and upkeep inventory
+/**
+ * Inventory encoding:
+ * 1 = keys
+ * 2 = bread
+ * 3 = sword
+ * 4 = coins
+ * 5 = ...
+*/
+void printInventory(WINDOW* smallWin, int inventory[], int numOfItems){
+	for(int i = 0; i < numOfItems; i++) {
+		wrefresh(smallWin);
+
+		if(inventory[i] == 0){ // Nothing
+			mvwprintw(smallWin, 1, 1, "NO ITEMS YET...\n");
+			wrefresh(smallWin);
+		}
+		if(inventory[i] == 1){ // key
+			mvwprintw(smallWin, 1, 1, "YOU HAVE A KEY\n");
+			wrefresh(smallWin);
+		}
+		if(inventory[i] == 2){ // bread
+			mvwprintw(smallWin, 2, 1, "YOU BREAD\n");
+			wrefresh(smallWin);
+		}
+	}
 }
 
 // Get command function for 
