@@ -8,8 +8,9 @@ WINDOW* createNewWin(int height, int width, int starty, int startx);
 void destroyWin(WINDOW* localWin);
 float getStartY(int rows, int height, float position);
 float getStartX(int cols, int width, float position);
-void getCommand(char* userIn, WINDOW* smallWin);
+int getCommand(char* userIn, WINDOW* smallWin);
 void printInventory(WINDOW* smallWin, int inventory[], int numOfItems);
+void commandToDialog(WINDOW* smallWin, int commandNum);
 
 int main(void){
 
@@ -108,9 +109,10 @@ int main(void){
     wrefresh(mWin);
     wrefresh(iWin);
 
-	// User input
+	// User input 
 	while((ch = getch()) != 'q') {	
 		char userIn[100];
+		int curCommand = 300;
 		/**
 		 * Loop through until q, store outputs of getCommand in an array
 		 * Once we will increment the array if the command is successful
@@ -118,7 +120,7 @@ int main(void){
 		*/
 		switch(ch) {	
 			case 'd': // dialog
-				mvwprintw(dWin, 1, 1, "YOU WAKE UP IN A GOLDEN FIELD, ON TOP OF "
+				mvwprintw(dWin, 1, 1, "YOU WAKE UP DAZED IN A GOLDEN FIELD, ON TOP OF "
 				"A SMALL HILL, WITH AN OAK TREE AND THREE PATHS. EACH GOING NORTH, SOUTH "
 				"AND WEST...\n");
 				wrefresh(dWin);
@@ -134,8 +136,8 @@ int main(void){
 				// To display new commands
 				mvwprintw(mWin, 1, 1, "AWAITING COMMAND...\n");
 				wrefresh(mWin);
-				getCommand(userIn, mWin);
-				break;
+				commandToDialog(dWin, getCommand(userIn, mWin));
+				break; //finally
 			case 'i': // inventory
 				printInventory(iWin, inventory, inventoryNumCounter);
 				wrefresh(iWin);
@@ -156,6 +158,13 @@ int main(void){
 	return 0;
 }
 
+// Takes the getcommand and makes it print some dialog based on the option
+// This will be a really big function, should probably be its own header file 
+void commandToDialog(WINDOW* dialogWin, int commandNum){
+	wclear(dialogWin);
+	wrefresh(dialogWin);
+}
+
 // Print and upkeep inventory
 /**
  * Inventory encoding:
@@ -168,7 +177,6 @@ int main(void){
 void printInventory(WINDOW* smallWin, int inventory[], int numOfItems){
 	for(int i = 0; i < numOfItems; i++) {
 		wrefresh(smallWin);
-
 		if(inventory[i] == 0){ // Nothing
 			mvwprintw(smallWin, 1, 1, "NO ITEMS YET...\n");
 			wrefresh(smallWin);
@@ -185,7 +193,7 @@ void printInventory(WINDOW* smallWin, int inventory[], int numOfItems){
 }
 
 // Get command function for 
-void getCommand(char* userIn, WINDOW* smallWin){
+int getCommand(char* userIn, WINDOW* smallWin){
 	// Return an int based on string input
 	echo();
 	wgetstr(smallWin, userIn);
@@ -193,10 +201,12 @@ void getCommand(char* userIn, WINDOW* smallWin){
 		wrefresh(smallWin);
 		mvwprintw(smallWin, 1, 1, "YOU MOVED FORWARD\n");
 		wrefresh(smallWin);
+		return 1;
 	} else { // Command Not found
 		wrefresh(smallWin);
 		mvwprintw(smallWin, 1, 1, "COMMAND NOT FOUND!\n");
 		wrefresh(smallWin);
+		return 0;
 	}
 	noecho();
 }
